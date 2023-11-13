@@ -1,0 +1,29 @@
+<h1>Passkeys#index</h1>
+<p>Find me in app/views/passkeys/index.html.erb</p>
+
+<% if @passkeys.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Label</th>
+        <th>Last Userd</th>
+        <th>Sign Count</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @passkeys.each do |passkey| %>
+      <tr>
+        <td><%= passkey.label || '(no name)' %></td>
+        <td>Last Used: <%= passkey.last_used_at ? l(passkey.last_used_at) : 'Never' %></td>
+        <td>Sign Count: <%= passkey.sign_count %></td>
+        <td><%= button_to 'Delete', passkey, method: :delete %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No passkeys found.</p>
+<% end %>
+
+<%= render 'new_form' %>

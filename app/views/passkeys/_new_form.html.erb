@@ -1,0 +1,13 @@
+<%= tag.div data: {
+   controller: "new-passkey",
+   "new-passkey-creation-options-url-value": creation_options_path
+ } do %>
+  <%= form_with url: passkeys_path, model: Passkey.new, method: :post, data: {
+    'new-passkey-target': 'form',
+    action: 'new-passkey#submit',
+  } do |f| %>
+    <%= f.hidden_field :credential, data: { 'new-passkey-target': 'credentialField' } %>
+    <%= f.text_field :label, placeholder: 'Device Name', required: true %>
+    <%= f.submit 'Set up a passkey' %>
+  <% end %>
+<% end %>

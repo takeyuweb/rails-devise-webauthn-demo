@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'passkeys/index'
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -10,5 +11,10 @@ Rails.application.routes.draw do
   # root "posts#index"
   authenticate :user do
     root "my_pages#show"
+    resources :passkeys, only: [:index, :create, :destroy] do
+      collection do
+        resources :creation_options, only: [:create], module: :passkeys
+      end
+    end
   end
 end
