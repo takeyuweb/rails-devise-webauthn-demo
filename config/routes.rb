@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  get 'passkeys/index'
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -16,5 +15,9 @@ Rails.application.routes.draw do
         resources :creation_options, only: [:create], module: :passkeys
       end
     end
+  end
+
+  scope :passkeys do
+    resources :request_options, only: [:create], module: :passkeys
   end
 end
