@@ -1,4 +1,6 @@
 class Passkeys::RequestOptionsController < ApplicationController
+  include Passkeyable
+
   def create
     user_params = params.require(:user).permit(:email)
     user = User.find_by(email: user_params[:email])
@@ -9,7 +11,7 @@ class Passkeys::RequestOptionsController < ApplicationController
       allow: user ? user.passkeys.pluck(:external_id) : nil,  # メールアドレスからユーザーが特定できれば、登録済みのパスキーで絞り込む
     )
 
-    session[:current_webauthn_authentication_challenge] = request_options.challenge
+    store_authentication_challenge(request_options)
 
     render json: request_options
   end

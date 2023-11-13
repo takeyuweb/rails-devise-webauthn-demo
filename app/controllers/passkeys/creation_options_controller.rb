@@ -1,4 +1,6 @@
 class Passkeys::CreationOptionsController < ApplicationController
+  include Passkeyable
+
   # See https://github.com/cedarcode/webauthn-ruby#options-for-create
   # https://www.w3.org/TR/webauthn/#dictdef-publickeycredentialcreationoptions
   def create
@@ -14,7 +16,7 @@ class Passkeys::CreationOptionsController < ApplicationController
       }
     )
 
-    session[:current_webauthn_registration_challenge] = creation_options.challenge
+    store_registration_challenge(creation_options)
 
     render json: creation_options
   end

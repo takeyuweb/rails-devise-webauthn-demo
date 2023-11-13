@@ -1,4 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
+  include Passkeyable
+
   # POST /resource/sign_in
   def create
     if authrized_passkey.present?
@@ -25,8 +27,6 @@ class Users::SessionsController < Devise::SessionsController
     webauthn_credential = WebAuthn::Credential.from_get(parsed_credential)
     passkey = Passkey.find_by(external_id: webauthn_credential.id)
     return @authrized_passkey = nil unless passkey
-
-    stored_authentication_challenge = session[:current_webauthn_authentication_challenge]
 
     verified = webauthn_credential.verify(
       stored_authentication_challenge,
